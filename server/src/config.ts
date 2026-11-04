@@ -7,9 +7,10 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 // 1. Define the validation schema for environment variables
 const envSchema = z.object({
-  PORT: z.coerce.number().default(5000),
+  PORT: z.coerce.number().default(5001),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  FRONTEND_URL: z.string().url({ message: "Must be a valid URL string" }),
+  FRONTEND_URL: z.string().url({ message: "Must be a valid URL string" }).default('http://localhost:5174'),
+  ALLOWED_DOMAINS: z.string().default('http://localhost:3000,http://localhost:5173,http://localhost:5174,http://localhost:5175,http://127.0.0.1:3000,http://127.0.0.1:5173,http://127.0.0.1:5174,http://127.0.0.1:5175')
 });
 
 // 2. Validate process.env against the schema
@@ -27,6 +28,7 @@ export const config = {
   nodeEnv: parsedEnv.data.NODE_ENV,
   frontendUrl: parsedEnv.data.FRONTEND_URL,
   isProduction: parsedEnv.data.NODE_ENV === 'production',
+  allowedDomains: parsedEnv.data.ALLOWED_DOMAINS.split(',').map((s) => s.trim())
 } as const;
 
 export type Config = typeof config;

@@ -6,12 +6,24 @@ import dotenv from 'dotenv';
 import { config } from '@server/config';
 import path from 'path';
 import fs from 'fs';
+import { productRoutes } from '@modules/products/adapters/http/products.routes';
+import { enquiryRoutes } from '@modules/product_enquiries/adapters/http/enquiry.routes';
 
 dotenv.config();
+const allowedOrigins = config.allowedDomains;
+
 const corsOptions: CorsOptions = {
-  origin: config.frontendUrl || 'http://localhost:3000',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 const app: Application = express();
@@ -19,9 +31,8 @@ app.use(cors(corsOptions));
 app.use(helmet());
 app.use(express.json());
 
-app.get('/api/v1/products', (req: Request, res: Response) => {
-    res.json({ message: "TypeScript Server is running smoothly!" });
-});
+app.use('/api/v1', productRoutes);
+app.use('/api/v1', enquiryRoutes);
 
 const clientBuildPath = path.join(__dirname, '../../client/dist');
 console.log(`Serving static files from: ${clientBuildPath}`);

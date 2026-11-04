@@ -15,4 +15,12 @@ export class ProductService {
   async getProductById(id: number): Promise<Product | null> {
     return this.productRepository.getProductById(id);
   }
+
+  async getProductsByCategory(category: string): Promise<Product[]> {
+    return this.productRepository.getProductsByCategory(category);
+  }
+
+  async getTopRatedProducts(limit: number): Promise<Product[]> {
+    return this.productRepository.getTopRatedProducts(limit);
+  }
 }
