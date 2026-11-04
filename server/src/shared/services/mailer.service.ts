@@ -29,6 +29,15 @@ export interface MailerService {
   sendSalesEnquiryEmail(enquiry: SalesEnquiryMail): Promise<MailSendResult>;
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export class NodeMailerService implements MailerService {
   private transporter: Transporter | null = null;
 
@@ -91,6 +100,11 @@ export class NodeMailerService implements MailerService {
 
   async sendSalesEnquiryEmail(enquiry: SalesEnquiryMail): Promise<MailSendResult> {
     const salesEmail = enquiry.salesEmail || process.env.SALES_EMAIL || 'sales@productcatalog.local';
+    const productTitle = escapeHtml(enquiry.productTitle);
+    const customerName = escapeHtml(enquiry.customerName);
+    const customerEmail = escapeHtml(enquiry.customerEmail);
+    const customerPhone = escapeHtml(enquiry.customerPhone || 'Not provided');
+    const message = escapeHtml(enquiry.message).replace(/\n/g, '<br />');
     const subject = `New product enquiry: ${enquiry.productTitle}`;
     const text = [
       'New product enquiry received.',
@@ -107,13 +121,13 @@ export class NodeMailerService implements MailerService {
 
     const html = `
       <h2>New product enquiry</h2>
-      <p><strong>Product:</strong> ${enquiry.productTitle}</p>
+      <p><strong>Product:</strong> ${productTitle}</p>
       <p><strong>Product ID:</strong> ${enquiry.productId}</p>
-      <p><strong>Customer:</strong> ${enquiry.customerName}</p>
-      <p><strong>Email:</strong> ${enquiry.customerEmail}</p>
-      <p><strong>Phone:</strong> ${enquiry.customerPhone || 'Not provided'}</p>
+      <p><strong>Customer:</strong> ${customerName}</p>
+      <p><strong>Email:</strong> ${customerEmail}</p>
+      <p><strong>Phone:</strong> ${customerPhone}</p>
       <p><strong>Message:</strong></p>
-      <p>${enquiry.message.replace(/\n/g, '<br />')}</p>
+      <p>${message}</p>
     `;
 
     return this.send({

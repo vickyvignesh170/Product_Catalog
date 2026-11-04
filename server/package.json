@@ -5,6 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
+    "lint": "tsc --noEmit",
     "start": "node -r tsconfig-paths/register dist/server.js",
     "dev": "ts-node -r tsconfig-paths/register src/server.ts",
     "test": "vitest run",

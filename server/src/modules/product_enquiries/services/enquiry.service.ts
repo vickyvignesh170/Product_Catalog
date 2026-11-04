@@ -3,6 +3,7 @@ import { Enquiry } from '@modules/product_enquiries/domain/enquiry.entity';
 import { EnquiryRepository } from '@modules/product_enquiries/domain/enquiry.repository.port';
 import { MailerService, mailerService } from '@server/shared/services/mailer.service';
 import { config } from '@server/config';
+import { logMessage } from '@server/utils/loggers';
 
 export interface CreateEnquiryInput {
   productId: number;
@@ -49,7 +50,7 @@ export class EnquiryService {
       salesEmail: config.salesEmail || 'sales@productcatalog.local'
     });
 
-    console.log(`[log]: Sales enquiry email sent for enquiry ID: ${savedEnquiry}`);
+    logMessage(`Sales enquiry email sent for enquiry ID: ${savedEnquiry.id}`);
 
     return savedEnquiry;
   }
