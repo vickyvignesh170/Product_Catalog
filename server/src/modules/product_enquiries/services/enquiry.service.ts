@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import { Enquiry } from '@modules/product_enquiries/domain/enquiry.entity';
 import { EnquiryRepository } from '@modules/product_enquiries/domain/enquiry.repository.port';
 import { MailerService, mailerService } from '@server/shared/services/mailer.service';
+import { config } from '@server/config';
 
 export interface CreateEnquiryInput {
   productId: number;
@@ -45,8 +46,10 @@ export class EnquiryService {
       customerEmail: savedEnquiry.customerEmail,
       customerPhone: savedEnquiry.customerPhone,
       message: savedEnquiry.message,
-      salesEmail: process.env.SALES_EMAIL || 'sales@productcatalog.local'
+      salesEmail: config.salesEmail || 'sales@productcatalog.local'
     });
+
+    console.log(`[log]: Sales enquiry email sent for enquiry ID: ${savedEnquiry}`);
 
     return savedEnquiry;
   }

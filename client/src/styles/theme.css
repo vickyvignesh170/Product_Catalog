@@ -278,6 +278,22 @@ h2 {
   color: var(--muted);
 }
 
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.pagination-bar .secondary-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .error-box {
   background: var(--danger-bg);
   border-color: #fecaca;

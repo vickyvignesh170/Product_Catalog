@@ -9,7 +9,7 @@ export function CategoryFilter({
   selectedCategory,
   onSelect,
 }: CategoryFilterProps): JSX.Element {
-  const filters = ['all', ...categories];
+  const filters = ['all', 'top-rated', ...categories];
 
   return (
     <nav className="filter-bar" aria-label="Filter products by category">
@@ -23,7 +23,7 @@ export function CategoryFilter({
             className={isActive ? 'filter-btn active' : 'filter-btn'}
             onClick={() => void onSelect(category)}
           >
-            {category === 'all' ? 'All products' : category}
+            {category === 'all' ? 'All products' : category === 'top-rated' ? 'Top rated' : category}
           </button>
         );
       })}

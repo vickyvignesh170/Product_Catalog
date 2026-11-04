@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc",
     "start": "node -r tsconfig-paths/register dist/server.js",
-    "dev": "ts-node -r tsconfig-paths/register src/server.ts"
+    "dev": "ts-node -r tsconfig-paths/register src/server.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -23,8 +25,10 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^24.0.0",
+    "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   }
 }

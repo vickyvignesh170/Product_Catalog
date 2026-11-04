@@ -22,6 +22,14 @@ export type EnquiryPayload = {
   message: string;
 };
 
+export type PaginatedProductsResponse = {
+  items: Product[];
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
+};
+
 export type EnquiryResponse = {
   success: boolean;
   message: string;

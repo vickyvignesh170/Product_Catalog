@@ -11,17 +11,30 @@ export class ProductController {
 
   async getAllProducts(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-        const category = req.query.category as string;
-        if (!category) {
-            logMessage("No category provided, fetching all products");
-            const products = await this.productService.getAllProducts();
-            res.json(products);
-            return;
-        }
+      const category = req.query.category as string | undefined;
+      const page = Number.parseInt((req.query.page as string | undefined) ?? '1', 10);
+      const limit = Number.parseInt((req.query.limit as string | undefined) ?? '10', 10);
 
-        logMessage(`Category provided: ${category}`);
-        const filteredproducts = await this.productService.getProductsByCategory(category);
-        res.json(filteredproducts);
+      const safePage = Number.isNaN(page) || page < 1 ? 1 : page;
+      const safeLimit = Number.isNaN(limit) || limit < 1 ? 10 : limit;
+
+      const allProducts = category
+        ? await this.productService.getProductsByCategory(category)
+        : await this.productService.getAllProducts();
+
+      const totalItems = allProducts.length;
+      const totalPages = Math.max(1, Math.ceil(totalItems / safeLimit));
+      const currentPage = Math.min(safePage, totalPages);
+      const startIndex = (currentPage - 1) * safeLimit;
+      const paginatedProducts = allProducts.slice(startIndex, startIndex + safeLimit);
+
+      res.json({
+        items: paginatedProducts,
+        page: currentPage,
+        limit: safeLimit,
+        totalItems,
+        totalPages,
+      });
     } catch (error) {
       next(error);
     }

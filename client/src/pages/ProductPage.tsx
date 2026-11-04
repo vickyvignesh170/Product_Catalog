@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { EnquiryModal } from '../features/enquiries/components/EnquiryModal';
 import { getProductById } from '../features/products/api/productsApi';
@@ -24,6 +24,9 @@ export function ProductPage(): JSX.Element {
       try {
         setLoading(true);
         setError('');
+        if (!id) {
+          return;
+        }
         const fetchedProduct = await getProductById(id);
 
         if (!ignore) {
@@ -62,7 +65,7 @@ export function ProductPage(): JSX.Element {
   }
 
   if (!product) {
-    return null;
+    return <div>Product not found.</div>;
   }
 
   return (
