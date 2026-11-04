@@ -24,6 +24,8 @@ The submitted repository is human-owned and reviewable: the developer remains re
 
 5. **Generate maintainable challenge documentation:** The final README, decisions, assumptions, and AI notes were based on the actual repository rather than generated from acceptance criteria alone.
 
+6. **Create portable Docker packaging:** Docker Compose packaging was directed at a single cross-platform command, with production static assets served by Express, environment overrides, health checks, and clean container shutdown.
+
 ## Mistakes caught during review
 
 - **Initial test-only confidence:** Passing unit tests did not prove that the served browser modules were healthy. The browser reproduction caught the real blank-screen failure, which was addressed through static serving and server startup changes.
@@ -32,6 +34,7 @@ The submitted repository is human-owned and reviewable: the developer remains re
 - **Misleading persistence names:** The `Postgres...` names do not indicate that PostgreSQL is installed or used. The implementation was reviewed so the documentation describes the current upstream fetch and in-memory enquiry behavior accurately.
 - **Mail fallback documentation risk:** The mailer correctly creates an Ethereal account when SMTP credentials are absent, but temporary delivery is not a real sales inbox. The documentation states this limitation instead of implying production delivery.
 - **SPA serving ambiguity:** The static build and Vite middleware fallback are both valid paths. The documentation explains which path is selected and why the client must be rebuilt for the normal development script.
+- **Runtime alias resolution:** The Docker runtime needed the server TypeScript path configuration and `tsconfig-paths` package available after the build, not just the compiled JavaScript and client assets.
 
 ## Review approach
 

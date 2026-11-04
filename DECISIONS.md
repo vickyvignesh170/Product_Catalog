@@ -34,6 +34,12 @@ The server serves the production client build on the same origin in normal devel
 
 CORS is scoped to `/api/v1` rather than static assets or the whole Express application. The development mode also permits localhost and loopback origins; production should retain the explicit `ALLOWED_DOMAINS` allowlist only.
 
+## Docker packaging
+
+Docker Compose is the primary reproducible setup. One multi-stage image builds the React client and TypeScript server, then runs the compiled Express application and serves the built SPA from the same container. This keeps the client/server contract portable across macOS, Linux, and Windows without requiring host Node.js versions or OS-specific shell commands.
+
+The container uses port 5001 by default and can override that port and application configuration through Compose environment variables. Runtime secrets are passed as environment variables and are never copied from `.env` files into the image. A health check verifies that the API is reachable, and Compose's init process plus the server's signal handlers support clean `docker compose down` shutdowns.
+
 ## Repository boundaries and growth
 
 The frontend owns routing, presentation, local loading state, and form validation. The backend owns upstream data access, pagination, category transformations, enquiry validation, and email delivery. The repository/service/port pattern means product and enquiry data sources can be swapped independently.

@@ -53,6 +53,35 @@ The development command builds the React client and starts Express on `http://lo
 
 For a separate Vite client workflow, copy `client/.env.example` if needed. The default client API path is `/api/v1`.
 
+## Docker Compose
+
+Docker Compose is the recommended setup because it packages the build, runtime dependencies, static client, Express server, environment defaults, health check, and shutdown behavior in one portable container.
+
+Requirements: Docker Desktop or Docker Engine with the Compose plugin.
+
+```bash
+docker compose up
+```
+
+Open `http://localhost:5001`. The first run may build the image and take a minute; subsequent starts reuse the image and are faster. After changing source files, use `docker compose up --build`.
+
+Stop and remove the project container:
+
+```bash
+docker compose down
+```
+
+No host Node.js installation or OS-specific scripts are required. Compose reads optional overrides from a root `.env` file or shell environment, including:
+
+- `APP_PORT` (host browser port; defaults to `5001`)
+- `FRONTEND_URL`
+- `SALES_EMAIL`
+- `ALLOWED_DOMAINS`
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`
+- `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`
+
+The container defaults to production mode, port 5001, same-origin browser requests, and the same no-account Ethereal mail fallback when SMTP settings are blank.
+
 ## Environment
 
 `server/.env.example` documents all supported settings. Do not commit `server/.env` or real credentials.
