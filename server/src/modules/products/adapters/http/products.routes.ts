@@ -14,7 +14,7 @@ router.get('/product-image', async (req, res, next) => {
     const rawUrl = typeof req.query.url === 'string' ? req.query.url : '';
     const url = new URL(rawUrl);
 
-    if (url.protocol !== 'https:' || url.hostname !== 'cdn.dummyjson.com') {
+    if (url.protocol !== 'https:' || url.hostname !== 'fakestoreapi.com') {
       res.status(400).json({ message: 'Invalid product image URL' });
       return;
     }
