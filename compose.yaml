@@ -1,0 +1,32 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: product-catalog
+    ports:
+      - "${APP_PORT:-5001}:5001"
+    environment:
+      PORT: 5001
+      NODE_ENV: production
+      FRONTEND_URL: "${FRONTEND_URL:-http://localhost:5001}"
+      SALES_EMAIL: "${SALES_EMAIL:-sales@productcatalog.local}"
+      ALLOWED_DOMAINS: "${ALLOWED_DOMAINS:-http://localhost:5001,http://127.0.0.1:5001}"
+      SMTP_HOST: "${SMTP_HOST:-}"
+      SMTP_PORT: "${SMTP_PORT:-587}"
+      SMTP_SECURE: "${SMTP_SECURE:-false}"
+      SMTP_USER: "${SMTP_USER:-}"
+      SMTP_PASS: "${SMTP_PASS:-}"
+      SMTP_FROM: "${SMTP_FROM:-Product Catalog <no-reply@productcatalog.local>}"
+    restart: unless-stopped
+    init: true
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:' + (process.env.PORT || 5001) + '/').then(r => { if (!r.ok) process.exit(1) }).catch(() => process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 15s

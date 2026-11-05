@@ -9,9 +9,9 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const envSchema = z.object({
   PORT: z.coerce.number().default(5001),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  FRONTEND_URL: z.string().url({ message: "Must be a valid URL string" }).default('http://localhost:5174'),
+  FRONTEND_URL: z.string().url({ message: "Must be a valid URL string" }).default('http://localhost:5001'),
   SALES_EMAIL: z.string().email({ message: "Must be a valid email address" }).default('sales@productcatalog.local'),
-  ALLOWED_DOMAINS: z.string().default('http://localhost:3000,http://localhost:5173,http://localhost:5174,http://localhost:5175,http://127.0.0.1:3000,http://127.0.0.1:5173,http://127.0.0.1:5174,http://127.0.0.1:5175')
+  ALLOWED_DOMAINS: z.string().default('http://localhost:5001,http://127.0.0.1:5001')
 });
 
 // 2. Validate process.env against the schema

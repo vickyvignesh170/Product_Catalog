@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { EnquiryModal } from '../features/enquiries/components/EnquiryModal';
 import { getProductById } from '../features/products/api/productsApi';
 import type { Product } from '../types/catalog';
+import heroImage from '../assets/hero.png';
 
 export function ProductPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
@@ -74,7 +75,16 @@ export function ProductPage(): JSX.Element {
 
       <article className="product-detail-card">
         <div className="product-detail-media">
-          <img src={product.image} alt={product.title} />
+          <img
+            src={product.image}
+            alt={product.title}
+            onError={(event) => {
+              const image = event.currentTarget;
+              if (image.src !== new URL(heroImage, window.location.origin).href) {
+                image.src = heroImage;
+              }
+            }}
+          />
         </div>
 
         <div className="product-detail-content">
