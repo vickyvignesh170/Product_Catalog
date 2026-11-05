@@ -35,7 +35,14 @@ async function createApp(): Promise<{ app: Application; httpServer: HttpServer }
   const app: Application = express();
   const httpServer = createServer(app);
 
-  const cspSetting = config.nodeEnv === 'development' ? false : undefined;
+  const cspSetting = config.nodeEnv === 'development'
+    ? false
+    : {
+        directives: {
+          defaultSrc: ["'self'"],
+          imgSrc: ["'self'", 'data:', 'https:', 'http:'],
+        },
+      };
 
 
   app.use(helmet({

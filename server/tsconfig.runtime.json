@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@server/*": ["./dist/*"],
+      "@modules/*": ["./dist/modules/*"]
+    }
+  }
+}

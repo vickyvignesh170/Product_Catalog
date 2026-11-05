@@ -51,7 +51,7 @@ npm run dev
 
 The development command builds the React client and starts Express on `http://localhost:5001`. Open that URL; API routes are under `/api/v1`.
 
-For a separate Vite client workflow, copy `client/.env.example` if needed. The default client API path is `/api/v1`.
+For a separate Vite client workflow, copy `client/.env.example` if needed. The default client API path is `http://localhost:5001`.
 
 ## Docker Compose
 
